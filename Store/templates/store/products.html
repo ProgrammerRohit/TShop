@@ -1,0 +1,58 @@
+{% extends './base.html' %}
+<!-- Load Custom Tags Start -->
+{% load tshirts_tags %}
+<!-- Load Custom Tags End -->
+
+<!-- Title Start -->
+{% block title %} Products {% endblock %}
+<!-- Title End -->
+
+<!-- Main Content Start -->
+{% block content %}
+<div class="container">
+  <div class="row mt-5">
+    <div class="col border border-dark text-center me-4">
+      <img src="{{tshirt.image.url}}" width="450px" />
+    </div>
+    <div class="col">
+      <h3 class="bg-dark text-light p-2">{{tshirt.name}}</h3>
+      <h4 class="mt-3">Tshirt Description</h4>
+      <p style="text-align: justify">
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur
+        delectus explicabo tempore a aut libero vel dolor possimus facilis, et
+        recusandae exercitationem ullam labore necessitatibus quisquam ex dicta
+        nobis obcaecati.
+      </p>
+
+      <h4>Sizes</h4>
+      {% for s in tshirt.sizevariant_set.all %}
+      <span>
+        <!-- <a
+          href="/products/{{tshirt.id}}?size={{s.size}}"
+          class="btn {% if active_size.size == s.size %} btn-dark {% else %} btn-light {% endif %}"
+          >{{s.size}}</a
+        > -->
+        <a
+          href="/products/{{tshirt.id}}?size={{s.size}}"
+          class="btn btn-{% active_button_class active_size.size s.size %}"
+          >{{s.size}}</a
+        >
+      </span>
+      {% endfor %}
+      <br /><br />
+      <a
+        href="/addtocart/{{tshirt.id}}/{{active_size.size}}?return_url={{request.get_full_path}}"
+        class="btn btn-outline-dark"
+        >Add To Cart</a
+      >
+      <a href="/checkout" class="btn btn-outline-dark">Buy Now</a>
+      <br /><br />
+      <span class="text-danger display-6 me-3"><s>{{price|rupee}}</s></span>
+      <span class="text-success display-6">{{sell_price|rupee}}</span>
+      <br /><br />
+      <span class="bg-info text-dark p-3">Save{{tshirt.discount}}%</span>
+    </div>
+  </div>
+</div>
+{% endblock %}
+<!-- Main Content End -->

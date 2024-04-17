@@ -1,0 +1,64 @@
+{% extends './base.html' %}
+<!-- Load Custom Tags Start -->
+{% load tshirts_tags %}
+<!-- Load Custom Tags End -->
+<!-- Title Start -->
+{% block title %} Orders {% endblock %}
+<!-- Title End -->
+
+<!-- Main Content Start -->
+{% block content %}
+<div class="container">
+  <table class="table mt-5">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Dates</th>
+        <th>Items</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{order.date|date}}</td>
+        <td>
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Image</th>
+                <th>Tshirt</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for oi in order.orderitem_set.all %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td><img src="{{oi.tshirt.image.url}}" height="60px" /></td>
+                <td>{{oi.tshirt.name}}</td>
+                <td>{{oi.price|rupee}}</td>
+                <td>{{oi.quantity}}</td>
+                <td>{% multiply oi.price oi.quantity as t %}{{t|rupee}}</td>
+                <td>
+                  <span
+                    class="badge text-bg-{% get_order_status_class order.order_status %}"
+                    >{{order.order_status}}</span
+                  >
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+<!-- Main Content End -->

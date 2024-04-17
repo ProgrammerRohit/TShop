@@ -1,0 +1,65 @@
+{% extends './base.html' %}
+<!-- Bootstrap Tag Start -->
+{% load crispy_forms_tags %}
+<!-- Bootstrap Tag End -->
+<!-- Load Custom Tags Start -->
+{% load tshirts_tags %}
+<!-- Load Custom Tags End -->
+
+<!-- Title Start -->
+{% block title %} Checkout {% endblock %}
+<!-- Title End -->
+
+<!-- Main Content Start -->
+{% block content %}
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-4 border p-4">
+      <h3 class="bg-dark text-light text-center p-2">
+        Enter Your Shipping Details
+      </h3>
+      <form action="checkout" method="POST">
+        {% csrf_token %} {{form|crispy}}
+        <input
+          type="submit"
+          value="Checkout"
+          class="btn btn-outline-dark mt-3"
+        />
+      </form>
+    </div>
+    <div class="col-7 border border-dark ms-2">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tshirt</th>
+            <th>Size</th>
+            <th>Price after Discount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in cart %}
+          <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{c.size.tshirt.name}}</td>
+            <td>{{c.size.size}}</td>
+            <td>
+              {%calculate_sale_price c.size.price c.size.tshirt.discount as p%}
+              {{p|rupee}}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div>
+        <br />
+        <span class="bg-info text-dark p-2">
+          Payable Amount {{cart|cart_payable_amount|rupee}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- This is comment -->
+{% endblock %}
+<!-- Main Content End -->

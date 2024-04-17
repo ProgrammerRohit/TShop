@@ -1,0 +1,25 @@
+{% extends './base.html' %}
+<!-- Bootstrap Tag Start -->
+{% load crispy_forms_tags %}
+<!-- Bootstrap Tag End -->
+
+<!-- Title Start -->
+{% block title %} Login {% endblock %}
+<!-- Title End -->
+
+<!-- Main Content Start -->
+{% block content %}
+<div class="col-lg-4 mx-auto border border-rounded p-4 mt-4">
+  <h1 class="text-center">Login</h1>
+  <hr />
+  <form action="/login" method="POST">
+    {% csrf_token %} {{form|crispy}}
+    <input
+      type="submit"
+      class="btn btn-outline-dark btn-lg mt-2"
+      value="Login"
+    />
+  </form>
+</div>
+{% endblock %}
+<!-- Main Content End -->

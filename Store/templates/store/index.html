@@ -1,0 +1,148 @@
+{% extends './base.html' %}
+<!-- Load Custom Tags Start -->
+{% load tshirts_tags %}
+<!-- Load Custom Tags End -->
+<!-- Load Static File Start -->
+{% load static %}
+<!-- Load Static File Start -->
+
+<!-- Title Start -->
+{% block title %} Home {% endblock %}
+<!-- Title End -->
+
+<!-- Main Content Start -->
+{% block content %}
+<!-- {{occassion}} {{brand}} {{color}} {{necktype}} {{sleeve}}
+{{idealfor}} -->
+<div class="container-fluid">
+  <div class="row m-1">
+    <div class="col-2 border">
+      <h5 class="my-4 bg-dark text-light p-2">Search Tshirts By Fitler</h5>
+      <form action="/" id="filterForm">
+        <!--Filter Div-->
+        <!-- Brand -->
+        <label><b>Brand</b></label>
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          name="brand"
+          onchange="submitForm()"
+        >
+          <option selected value="">--Select Item--</option>
+          {% for brand in brands %}
+          <option value="{{brand.slug}}">{{brand.title}}</option>
+          {% endfor %}
+        </select>
+        <!-- Color -->
+        <label><b>Colors</b></label>
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          name="color"
+          onchange="submitForm()"
+        >
+          <option selected value="">--Select Item--</option>
+          {% for item in colors %}
+          <option value="{{item.slug}}">{{item.title}}</option>
+          {% endfor %}
+        </select>
+        <!-- NeckType -->
+        <label><b>NeckType</b></label>
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          name="necktype"
+          onchange="submitForm()"
+        >
+          <option selected value="">--Select Item--</option>
+          {% for item in necktypes %}
+          <option value="{{item.slug}}">{{item.title}}</option>
+          {% endfor %}
+        </select>
+        <!-- Sleeve -->
+        <label><b>Sleeve</b></label>
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          name="sleeve"
+          onchange="submitForm()"
+        >
+          <option selected value="">--Select Item--</option>
+          {% for item in sleeves %}
+          <option value="{{item.slug}}">{{item.title}}</option>
+          {% endfor %}
+        </select>
+        <!-- Occassion -->
+        <label><b>Occasion</b></label>
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          name="occasion"
+          onchange="submitForm()"
+        >
+          <option selected value="">--Select Item--</option>
+          {% for item in occasions %}
+          <option value="{{item.slug}}">{{item.title}}</option>
+          {% endfor %}
+        </select>
+        <!-- IdealFor -->
+        <label><b>IdealFor</b></label>
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          name="idealfor"
+          onchange="submitForm()"
+        >
+          <option selected value="">--Select Item--</option>
+          {% for item in idealfors %}
+          <option value="{{item.slug}}">{{item.title}}</option>
+          {% endfor %}
+        </select>
+        <a href="/" class="btn btn-outline-dark mt-4">Clear Filter</a>
+      </form>
+    </div>
+    <div class="col">
+      <!--Tshirt Div-->
+      <div class="row">
+        {% for tshirt in tshirts %}
+        <div class="col-lg-3 mt-3">
+          <div class="card h-100" style="width: 18rem">
+            <img
+              class="card-img-top"
+              src="{{tshirt.image.url}}"
+              alt="{{tshirt.name}}"
+              height="350px"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{tshirt.name}}</h5>
+              <p class="card-text">{{tshirt.description}}</p>
+              <h4 class="text-danger">
+                <s>{% min_price tshirt as result %} {{result|rupee}}</s>
+              </h4>
+              <span
+                ><b
+                  >{% after_discount tshirt as discount_result %}
+                  {{discount_result|rupee}}</b
+                ></span
+              >
+              <span class="float-end badge text-bg-info"
+                >Save {{tshirt.discount}}%</span
+              >
+            </div>
+            <div class="card-footer d-grid gap-2 p-0">
+              <a href="products/{{tshirt.id}}" class="btn btn-outline-dark"
+                >See More</a
+              >
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Javascript File -->
+<script src="{% static 'store/js/home.js' %}"></script>
+{% endblock %}
+<!-- Main Content End -->
